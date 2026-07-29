@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { supabase, type Forfait } from "@/lib/supabase";
 
 function dureeLabel(heures: number) {
@@ -64,9 +65,12 @@ export default async function CataloguePage() {
 
         <div className="flex flex-col gap-3">
           {forfaits?.map((f: Forfait) => (
-            <div
+            <Link
               key={f.id}
-              className="rounded-2xl p-4 bg-white border border-gray-200"
+              href={`/paiement?id=${f.id}&nom=${encodeURIComponent(
+                f.nom
+              )}&prix=${f.prix_fcfa}&duree=${f.duree_heures}`}
+              className="rounded-2xl p-4 bg-white border border-gray-200 block active:opacity-70"
             >
               <div className="flex items-center justify-between">
                 <span className="font-display font-bold text-ink text-base">
@@ -79,15 +83,14 @@ export default async function CataloguePage() {
               <p className="text-gray-500 text-xs mt-1">
                 {dureeLabel(f.duree_heures)}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
 
         <p className="text-gray-400 text-xs mt-6 text-center">
-          Niveau 1 — catalogue en lecture seule. Le paiement et la génération
-          de code arrivent au Niveau 2.
+          Choisis un forfait pour lancer le paiement Mobile Money.
         </p>
       </div>
     </main>
   );
-      }
+}
